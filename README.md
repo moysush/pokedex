@@ -2,7 +2,7 @@
 
 This repository is used for the CI/CD module of the Full Stack Open course
 
-Deployment: https://pokedex-bd8u.onrender.com/
+Deployed at: https://pokedex-bd8u.onrender.com/
 
 ## Commands
 

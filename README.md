@@ -1,6 +1,6 @@
 # Full Stack open CI/CD
 
-This repository is used for the CI/CD module of the Full Stack Open course
+This repository is used for the CI/CD module of the Full Stack Open course.
 
 Deployed at: https://pokedex-bd8u.onrender.com/
 

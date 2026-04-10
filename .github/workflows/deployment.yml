@@ -33,7 +33,7 @@ jobs:
         run: curl ${{secrets.RENDER_DEPLOY_HOOK}}
   notify_failure:
     needs: [deploy]
-    if: failure()
+    if: failure() && github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - name: success message to discord
@@ -43,7 +43,7 @@ jobs:
           status: "Failure"
   notify_success:
     needs: [deploy]
-    if: success()
+    if: success() && github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - name: failure message to discord

@@ -22,7 +22,7 @@ jobs:
         run: npm run eslint
       - name: Run npm test
         run: npm run test
-      - name: Run npm build
+      - name: Run npm buildd
         run: npm run build
   deploy:
     needs: [build_and_test]
@@ -40,7 +40,6 @@ jobs:
         if: failure()
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          status: "failure"
           description: |
             Build Failed! The pipeline encountered an error
             **Repository:** ${{ github.repository }}
@@ -59,7 +58,6 @@ jobs:
         if: success()
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          status: "success"
           description: "A new version deployed to production"
   tag_release:
     needs: [deploy]

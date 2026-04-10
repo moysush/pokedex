@@ -32,12 +32,12 @@ jobs:
         if: ${{github.event_name == 'push' && !contains(github.event.head_commit.message, '#skip')}}
         run: curl ${{secrets.RENDER_DEPLOY_HOOK}}
   notify_failure:
-    needs: [build_and_test, deploy]
+    needs: [build_and_test]
+    if: failure()
     runs-on: ubuntu-latest
     steps:
       - name: success message to discord
         uses: sarisia/actions-status-discord@v1
-        if: failure()
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           description: |
@@ -51,14 +51,13 @@ jobs:
             **Job:** ${{ github.job }}
   notify_success:
     needs: [deploy]
+    if: success()
     runs-on: ubuntu-latest
     steps:
       - name: failure message to discord
         uses: sarisia/actions-status-discord@v1
-        if: success()
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          description: "A new version deployed to production"
   tag_release:
     needs: [deploy]
     runs-on: ubuntu-latest

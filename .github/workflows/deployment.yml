@@ -22,8 +22,8 @@ jobs:
         run: npm run eslint
       - name: Run npm test
         run: npm run test
-      - name: Run npm buildd
-        run: npm run build
+      - name: Run npm build
+        run: npm run buildd
   deploy:
     needs: [build_and_test]
     runs-on: ubuntu-latest

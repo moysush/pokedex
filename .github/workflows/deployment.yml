@@ -40,15 +40,7 @@ jobs:
         uses: sarisia/actions-status-discord@v1
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          description: |
-            Build Failed! The pipeline encountered an error
-            **Repository:** ${{ github.repository }}
-            **Branch:** ${{ github.ref_name }}
-            **Commit:** ${{ github.sha }}
-            **Message:** ${{ github.event.head_commit.message }}
-            **Author:** ${{ github.event.head_commit.author.name }}
-            **Workflow:** ${{ github.workflow }}
-            **Job:** ${{ github.job }}
+          status: "Failure"
   notify_success:
     needs: [deploy]
     if: success()
@@ -58,6 +50,12 @@ jobs:
         uses: sarisia/actions-status-discord@v1
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: "Success"
+          nodetail: true
+          description: |
+                   **Commit:** ${{ github.sha }}
+                   **Message:** ${{ github.event.head_commit.message }}
+                   **Author:** ${{ github.event.head_commit.author.name }}
   tag_release:
     needs: [deploy]
     runs-on: ubuntu-latest

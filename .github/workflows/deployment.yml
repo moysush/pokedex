@@ -9,7 +9,7 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  simple_deployment_pipeline:
+  build_and_test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -22,18 +22,45 @@ jobs:
         run: npm run eslint
       - name: Run npm test
         run: npm run test
-      - name: Run npm build
+      - name: Run npm buildd
         run: npm run build
+  deploy:
+    needs: [build_and_test]
+    runs-on: ubuntu-latest
+    steps:
       - name: Trigger deployment
         if: ${{github.event_name == 'push' && !contains(github.event.head_commit.message, '#skip')}}
         run: curl ${{secrets.RENDER_DEPLOY_HOOK}}
-      - name: Discord Notify
+  notify_failure:
+    needs: [build_and_test, deploy]
+    runs-on: ubuntu-latest
+    steps:
+      - name: success message to discord
         uses: sarisia/actions-status-discord@v1
-        if: always()
+        if: failure()
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          description: |
+            Build Failed! The pipeline encountered an error
+            **Repository:** ${{ github.repository }}
+            **Branch:** ${{ github.ref_name }}
+            **Commit:** ${{ github.sha }}
+            **Message:** ${{ github.event.head_commit.message }}
+            **Author:** ${{ github.event.head_commit.author.name }}
+            **Workflow:** ${{ github.workflow }}
+            **Job:** ${{ github.job }}
+  notify_success:
+    needs: [deploy]
+    runs-on: ubuntu-latest
+    steps:
+      - name: failure message to discord
+        uses: sarisia/actions-status-discord@v1
+        if: success()
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          description: "A new version deployed to production"
   tag_release:
-    needs: [simple_deployment_pipeline]
+    needs: [deploy]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6

@@ -1,0 +1,17 @@
+name: Periodic Health
+
+on:
+   workflow_dispatch:
+      schedule:
+         - cron: '*/5 * * * *'
+
+jobs:
+  health-check:
+     runs-on: ubuntu-latest
+     steps:
+        - run: echo "hello!"
+        - name: check the deployed URL
+          uses: jtalk/url-health-check-action@v5
+          with:
+             url: https://pokedex-bd8u.onrender.com
+             max-attempts: 3

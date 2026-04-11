@@ -13,5 +13,5 @@ jobs:
         - name: check the deployed URL
           uses: jtalk/url-health-check-action@v5
           with:
-             url: https://pokedex-bd8u.onrender.co
+             url: https://pokedex-bd8u.onrender.c
              max-attempts: 3

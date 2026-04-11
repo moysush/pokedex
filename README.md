@@ -3,6 +3,7 @@
 This repository is used for the CI/CD module of the Full Stack Open course.
 
 Deployed at: https://pokedex-bd8u.onrender.com/
+Redux Anecdotes Repo: https://github.com/moysush/redux-anecdotes
 
 ## Commands
 
